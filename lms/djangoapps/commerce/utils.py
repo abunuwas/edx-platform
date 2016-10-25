@@ -38,11 +38,9 @@ class EcommerceService(object):
         Returns:
             Receipt page for the specified Order.
         """
-        if self.config.use_ecommerce_receipt_page:
-            receipt_page_url = self.get_absolute_ecommerce_url(configuration_helpers.get_value(
-                'ECOMMERCE_RECEIPT_PAGE_URL',
-                default=self.config.DEFAULT_RECEIPT_PAGE_URL
-            ))
+        ecommerce_receipt_page_url = configuration_helpers.get_value('ECOMMERCE_RECEIPT_PAGE_URL')
+        if ecommerce_receipt_page_url:
+            receipt_page_url = self.get_absolute_ecommerce_url(ecommerce_receipt_page_url)
         else:
             receipt_page_url = self.config.receipt_page
         return receipt_page_url + order_number
