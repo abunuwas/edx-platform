@@ -769,6 +769,8 @@ class ProblemStateOnNavigationTest(UniqueCourseTest):
         # Go to sequential position 2 and assert that we are on problem 2.
         self.go_to_tab_and_assert_problem(2, self.problem2_name)
 
+        self.problem_page.wait_for_expected_status('span.unanswered', 'unanswered')
+
         # Come back to our original unit in the sequence and assert that the content hasn't changed.
         self.go_to_tab_and_assert_problem(1, self.problem1_name)
         problem1_content_after_coming_back = self.problem_page.problem_content

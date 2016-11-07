@@ -7,7 +7,6 @@
     <div class="text-input-dynamath_data ${doinline}" data-preprocessor="${preprocessor['class_name']}"/>
     <div class="script_placeholder" data-src="${preprocessor['script_src']}"/>
 % endif
-
 % if status in ('unsubmitted', 'correct', 'incorrect', 'partially-correct', 'incomplete'):
     <div class="${status.classname} ${doinline}">
 % endif
@@ -35,7 +34,6 @@
     % endif
 />
 <span class="trailing_text">${trailing_text}</span>
-
 <%include file="status_span.html" args="status=status, status_id=id"/>
 
 <p id="answer_${id}" class="answer"></p>

@@ -20,7 +20,9 @@ from openedx.core.djangolib.markup import HTML
         <section id="forinput${choice_id}"
             % if input_type == 'radio' and choice_id in value :
             <%
-                if status == 'correct':
+                if saved_answers:
+                    correctness = status.classname
+                elif status == 'correct':
                     correctness = 'correct'
                 elif status == 'incorrect':
                     correctness = 'incorrect'
