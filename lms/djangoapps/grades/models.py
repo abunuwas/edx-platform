@@ -15,6 +15,7 @@ import json
 from lazy import lazy
 import logging
 
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.timezone import now
 from model_utils.models import TimeStampedModel
@@ -236,6 +237,11 @@ class PersistentSubsectionGrade(TimeStampedModel):
     earned_graded = models.FloatField(blank=False)
     possible_graded = models.FloatField(blank=False)
 
+    # timestamp for the learner's first attempt at content in
+    # this subsection. If null, indicates no attempt
+    # has yet been made.
+    first_attempted = models.DateTimeField(null=True, blank=True)
+
     # track which blocks were visible at the time of grade calculation
     visible_blocks = models.ForeignKey(VisibleBlocks, db_column='visible_blocks_hash', to_field='hashed')
 
@@ -253,16 +259,18 @@ class PersistentSubsectionGrade(TimeStampedModel):
         """
         Returns a string representation of this model.
         """
-        return u"{} user: {}, course version: {}, subsection {} ({}). {}/{} graded, {}/{} all".format(
-            type(self).__name__,
-            self.user_id,
-            self.course_version,
-            self.usage_key,
-            self.visible_blocks_id,
-            self.earned_graded,
-            self.possible_graded,
-            self.earned_all,
-            self.possible_all,
+        return (u"{} user: {}, course version: {}, subsection {} ({}). {}/{} graded, {}/{} all, "
+                u"first_attempted {}").format(
+                    type(self).__name__,
+                    self.user_id,
+                    self.course_version,
+                    self.usage_key,
+                    self.visible_blocks_id,
+                    self.earned_graded,
+                    self.possible_graded,
+                    self.earned_all,
+                    self.possible_all,
+                    self.first_attempted,
         )
 
     @classmethod
