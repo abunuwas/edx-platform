@@ -184,37 +184,18 @@ class ThreadSerializerSerializationTest(SerializerTestMixin, SharedModuleStoreTe
             "unread_comments_count": 3,
             "read": False,
             "endorsed": False,
-            "response_count": None,
+            "resp_total": 0,
         }
-        expected = {
-            "id": "test_thread",
-            "course_id": unicode(self.course.id),
-            "topic_id": "test_topic",
-            "group_id": None,
-            "group_name": None,
-            "author": self.author.username,
-            "author_label": None,
+        expected = self.expected_thread_data({
             "created_at": "2015-04-28T00:00:00Z",
             "updated_at": "2015-04-28T11:11:11Z",
-            "type": "discussion",
-            "title": "Test Title",
-            "raw_body": "Test body",
-            "rendered_body": "<p>Test body</p>",
-            "pinned": True,
-            "closed": False,
-            "following": False,
-            "abuse_flagged": False,
-            "voted": False,
+            "author": self.author.username,
             "vote_count": 4,
             "comment_count": 6,
-            "unread_comment_count": 4,
-            "comment_list_url": "http://testserver/api/discussion/v1/comments/?thread_id=test_thread",
-            "endorsed_comment_list_url": None,
-            "non_endorsed_comment_list_url": None,
+            "unread_comment_count": 3,
+            "pinned": True,
             "editable_fields": ["abuse_flagged", "following", "read", "voted"],
-            "read": False,
-            "has_endorsed": False,
-        }
+        })
         self.assertEqual(self.serialize(thread), expected)
 
         thread["thread_type"] = "question"
