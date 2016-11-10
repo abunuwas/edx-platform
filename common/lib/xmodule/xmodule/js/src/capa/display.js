@@ -938,7 +938,7 @@
                 return $(element).find('input').on('input', function() {
                     var $p;
                     $p = $(element).find('span.status');
-                    return $p.parent().removeClass().addClass('unsubmitted');
+                    return $p.parent().removeAttr('class').addClass('unsubmitted');
                 });
             },
             choicegroup: function(element) {
@@ -949,7 +949,7 @@
                     var $status;
                     $status = $('#status_' + id);
                     if ($status[0]) {
-                        $status.removeClass().addClass('unanswered');
+                        $status.removeAttr('class').addClass('unanswered');
                     } else {
                         $('<span>', {
                             class: 'unanswered',
@@ -957,7 +957,7 @@
                             id: 'status_' + id
                         });
                     }
-                    return $element.find('label').removeClass();
+                    return $element.find('label').removeAttr('class');
                 });
             },
             'option-input': function(element) {
@@ -965,7 +965,7 @@
                 $select = $(element).find('select');
                 id = ($select.attr('id').match(/^input_(.*)$/))[1];
                 return $select.on('change', function() {
-                    return $('#status_' + id).removeClass().addClass('unanswered')
+                    return $('#status_' + id).removeAttr('class').addClass('unanswered')
                         .find('.sr')
                         .text(gettext('unsubmitted'));
                 });

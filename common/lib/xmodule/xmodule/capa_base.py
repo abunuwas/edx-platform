@@ -162,7 +162,7 @@ class CapaFields(object):
                        scope=Scope.user_state, default={})
     input_state = Dict(help=_("Dictionary for maintaining the state of inputtypes"), scope=Scope.user_state)
     student_answers = Dict(help=_("Dictionary with the current student responses"), scope=Scope.user_state)
-    saved_answers = Boolean(help=_("Whether or not the answers have been saved since last submit"),
+    has_saved_answers = Boolean(help=_("Whether or not the answers have been saved since last submit"),
                             scope=Scope.user_state)
     done = Boolean(help=_("Whether the student has answered the problem"), scope=Scope.user_state)
     seed = Integer(help=_("Random seed for this student"), scope=Scope.user_state)
@@ -328,7 +328,7 @@ class CapaMixin(CapaFields):
             'done': self.done,
             'correct_map': self.correct_map,
             'student_answers': self.student_answers,
-            'saved_answers': self.saved_answers,
+            'has_saved_answers': self.has_saved_answers,
             'input_state': self.input_state,
             'seed': self.seed,
         }
@@ -342,7 +342,7 @@ class CapaMixin(CapaFields):
         self.correct_map = lcp_state['correct_map']
         self.input_state = lcp_state['input_state']
         self.student_answers = lcp_state['student_answers']
-        self.saved_answers = lcp_state['saved_answers']
+        self.has_saved_answers = lcp_state['has_saved_answers']
         self.seed = lcp_state['seed']
 
     def set_last_submission_time(self):
@@ -1084,7 +1084,7 @@ class CapaMixin(CapaFields):
         event_info['state'] = self.lcp.get_state()
         event_info['problem_id'] = self.location.to_deprecated_string()
 
-        self.lcp.saved_answers = False
+        self.lcp.has_saved_answers = False
         answers = self.make_dict_of_responses(data)
         answers_without_files = convert_files_to_filenames(answers)
         event_info['answers'] = answers_without_files
@@ -1495,7 +1495,7 @@ class CapaMixin(CapaFields):
             }
 
         self.lcp.student_answers = answers
-        self.lcp.saved_answers = True
+        self.lcp.has_saved_answers = True
 
         self.set_state_from_lcp()
 
