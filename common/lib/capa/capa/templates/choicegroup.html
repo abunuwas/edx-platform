@@ -23,21 +23,9 @@
             <label id="${id}-${choice_id}-label"
                 ## If the student has selected this choice...
                 % if is_radio_input(choice_id):
-                   <%
-                    if saved_answers:
-                        correctness = status.classname
-                    elif status == 'correct':
-                        correctness = 'correct'
-                    elif status == 'incorrect':
-                        correctness = 'incorrect'
-                    elif status == 'partially-correct':
-                        correctness = 'partially-correct'
-                    else:
-                        correctness = None
-                    %>
 
-                    % if correctness and not show_correctness == 'never':
-                        <% label_class += ' choicegroup_' + correctness %>
+                    % if status.classname and not show_correctness == 'never':
+                        <% label_class += ' choicegroup_' + status.classname %>
                     % endif
                 % endif
                 class="${label_class}"
