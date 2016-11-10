@@ -729,12 +729,11 @@ class MatlabTest(unittest.TestCase):
             etree.tostring(output),
             textwrap.dedent("""
             <div>{\'status\': Status(\'queued\'), \'button_enabled\': True, \'queue_len\': \'3\', \'cols\': \'80\',
-            \'STATIC_URL\': \'/dummy-static/\', \'linenumbers\': \'true\', \'has_saved_answers\': False,
-            \'id\': \'prob_1_2\', \'describedby_html\': Markup(u\'aria-describedby="status_prob_1_2"\'),
-            \'rows\': \'10\', \'mode\': \'\', \'value\': \'print "good evening"\', \'queue_msg\': \'\',
-            \'response_data\': {},
-            \'msg\': u\'Submitted. As soon as a response is returned,
-            this message will be replaced by that feedback.\',
+            \'STATIC_URL\': \'/dummy-static/\', \'linenumbers\': \'true\', \'id\': \'prob_1_2\',
+            \'describedby_html\': Markup(u\'aria-describedby="status_prob_1_2"\'), \'rows\': \'10\',
+            \'mode\': \'\', \'value\': \'print "good evening"\', \'has_saved_answers\': False,
+            \'queue_msg\': \'\', \'response_data\': {},
+            \'msg\': u\'Submitted. As soon as a response is returned, this message will be replaced by that feedback.\',
             \'matlab_editor_js\': \'/dummy-static/js/vendor/CodeMirror/octave.js\',
             \'hidden\': \'\', \'tabsize\': 4}</div>
             """).replace('\n', ' ').strip()
@@ -832,7 +831,7 @@ class MatlabTest(unittest.TestCase):
             'id': prob_id,
             'value': 'print "good evening"',
             'status': inputtypes.Status('queued'),
-            'has_fa': False,
+            'has_saved_answers': False,
             'msg': self.the_input.submitted_msg,
             'mode': self.mode,
             'rows': self.rows,
