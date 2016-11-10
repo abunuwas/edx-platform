@@ -161,34 +161,20 @@ class ThreadSerializerSerializationTest(SerializerTestMixin, SharedModuleStoreTe
         return ThreadSerializer(thread, context=get_context(self.course, self.request)).data
 
     def test_basic(self):
-        thread = {
-            "type": "thread",
+        thread = make_minimal_cs_thread({
             "id": "test_thread",
             "course_id": unicode(self.course.id),
             "commentable_id": "test_topic",
-            "group_id": None,
             "user_id": str(self.author.id),
             "username": self.author.username,
-            "anonymous": False,
-            "anonymous_to_peers": False,
-            "created_at": "2015-04-28T00:00:00Z",
-            "updated_at": "2015-04-28T11:11:11Z",
-            "thread_type": "discussion",
             "title": "Test Title",
             "body": "Test body",
             "pinned": True,
-            "closed": False,
-            "abuse_flaggers": [],
             "votes": {"up_count": 4},
             "comments_count": 5,
             "unread_comments_count": 3,
-            "read": False,
-            "endorsed": False,
-            "resp_total": 0,
-        }
+        })
         expected = self.expected_thread_data({
-            "created_at": "2015-04-28T00:00:00Z",
-            "updated_at": "2015-04-28T11:11:11Z",
             "author": self.author.username,
             "vote_count": 4,
             "comment_count": 6,
