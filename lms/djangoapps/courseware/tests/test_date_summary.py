@@ -172,7 +172,7 @@ class CourseDateSummaryTest(SharedModuleStoreTestCase):
         block = TodaysDate(self.course, self.user)
         self.assertTrue(block.is_enabled)
         self.assertEqual(block.date, datetime.now(utc))
-        self.assertEqual(block.title, 'Today is {date}')
+        self.assertEqual(block.title, 'current_datetime')
 
     @freeze_time('2015-01-02')
     def test_todays_date_no_timezone(self):
