@@ -1437,6 +1437,7 @@ class CreateThreadTest(
         cs_thread = make_minimal_cs_thread({
             "id": "test_id",
             "username": self.user.username,
+            "read": True,
         })
         self.register_post_thread_response(cs_thread)
         with self.assert_signal_sent(api, 'thread_created', sender=None, user=self.user, exclude_args=('post',)):
@@ -1444,7 +1445,8 @@ class CreateThreadTest(
         expected = self.expected_thread_data({
             "id": "test_id",
             "course_id": unicode(self.course.id),
-            'comment_list_url': 'http://testserver/api/discussion/v1/comments/?thread_id=test_id',
+            "comment_list_url": "http://testserver/api/discussion/v1/comments/?thread_id=test_id",
+            "read": True,
         })
         self.assertEqual(actual, expected)
         self.assertEqual(
@@ -3031,7 +3033,10 @@ class RetrieveThreadTest(
 
     def test_basic(self):
         self.register_thread({"resp_total": 2})
-        self.assertEqual(get_thread(self.request, self.thread_id), self.expected_thread_data({"response_count": 2}))
+        self.assertEqual(get_thread(self.request, self.thread_id), self.expected_thread_data({
+            "response_count": 2,
+            "unread_comment_count": 1,
+        }))
         self.assertEqual(httpretty.last_request().method, "GET")
 
     def test_thread_id_not_found(self):
@@ -3046,7 +3051,8 @@ class RetrieveThreadTest(
         self.register_thread()
         self.request.user = non_author_user
         self.assertEqual(get_thread(self.request, self.thread_id), self.expected_thread_data({
-            "editable_fields": ["abuse_flagged", "following", "read", "voted"]
+            "editable_fields": ["abuse_flagged", "following", "read", "voted"],
+            "unread_comment_count": 1,
         }))
         self.assertEqual(httpretty.last_request().method, "GET")
 
