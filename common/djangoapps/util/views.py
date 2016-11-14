@@ -14,16 +14,16 @@ from django.views.defaults import server_error
 from django.http import (Http404, HttpResponse, HttpResponseNotAllowed,
                          HttpResponseServerError, HttpResponseForbidden)
 import dogstats_wrapper as dog_stats_api
-from edxmako.shortcuts import render_to_response, render_to_string
 import zendesk
-from openedx.core.djangoapps.site_configuration import helpers as configuration_helpers
-
 import calc
-import track.views
 
 from opaque_keys import InvalidKeyError
+
 from opaque_keys.edx.keys import CourseKey
 
+from edxmako.shortcuts import render_to_response, render_to_string
+from openedx.core.djangoapps.site_configuration import helpers as configuration_helpers
+import track.views
 from student.roles import GlobalStaff
 
 log = logging.getLogger(__name__)
@@ -290,6 +290,7 @@ def _record_feedback_in_datadog(tags):
     datadog_tags = [u"{k}:{v}".format(k=k, v=v) for k, v in tags.items()]
     dog_stats_api.increment(DATADOG_FEEDBACK_METRIC, tags=datadog_tags)
 
+
 def get_feedback_form_context(request):
     """
     Extract the submitted form fields to be used as a context for
@@ -313,17 +314,14 @@ def get_feedback_form_context(request):
         context["realname"] = request.POST["name"]
         context["email"] = request.POST["email"]
 
-    for header, pretty in [
-        ("HTTP_REFERER", "Page"),
-        ("HTTP_USER_AGENT", "Browser"),
-        ("REMOTE_ADDR", "Client IP"),
-        ("SERVER_NAME", "Host")
-    ]:
+    for header, pretty in [("HTTP_REFERER", "Page"), ("HTTP_USER_AGENT", "Browser"), ("REMOTE_ADDR", "Client IP"),
+                           ("SERVER_NAME", "Host")]:
         context["additional_info"][pretty] = request.META.get(header)
 
     context["support_email"] = configuration_helpers.get_value('email_from_address', settings.DEFAULT_FROM_EMAIL)
 
     return context
+
 
 def submit_feedback(request):
     """
@@ -396,11 +394,7 @@ def submit_feedback(request):
             log.exception('Error sending feedback to contact_us email address.')
 
     else:
-        if (
-            not settings.ZENDESK_URL or
-            not settings.ZENDESK_USER or
-            not settings.ZENDESK_API_KEY
-        ):
+        if not settings.ZENDESK_URL or not settings.ZENDESK_USER or not settings.ZENDESK_API_KEY:
             raise Exception("Zendesk enabled but not configured")
 
         success = _record_feedback_in_zendesk(
@@ -420,6 +414,7 @@ def submit_feedback(request):
 
 def info(request):
     ''' Info page (link from main header) '''
+    # pylint: disable=unused-argument
     return render_to_response("info.html", {})
 
 
